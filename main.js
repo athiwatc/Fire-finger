@@ -215,7 +215,7 @@ var dic = ["a", "convenient", "hard", "official", "something",
 "consider", "half", "off", "soft", " ",
 "consideration", "hand", "offer", "sold", " ",
 "contain", "happen", "office", "some", " ",
-"contract", "happy"]
+"contract", "happy"];
 
 /* Word list */
 var wordList;
@@ -315,16 +315,6 @@ function onTyping(e) {
             playerText.text += String.fromCharCode(e.charCode).toUpperCase();
         } else {
             playerText.text += String.fromCharCode(e.charCode);
-        }
-
-    } else if (e.keyCode == 32) {
-        // If not a last character,remove the last character
-        if (playerText.text.length > 1) {
-            playerText.text = playerText.text.substring(0, playerText.text.length - 1)
-        }
-        // If last character, clear to empty string
-        else {
-            playerText.text = "";
         }
     }
 }
@@ -453,7 +443,7 @@ function highlightWord() {
     for (var i = 0; i < wordList.length; i++) {
         var word = wordList[i];
         // If any word start with text that user input, highlight it
-        if (!match && playerText.text.length > 0 && startWith(word.text, playerText.text)) {
+        if (playerText.text.length > 0 && startWith(word.text, playerText.text)) {
             word.color = "#0f0";
             match = true;
         }
@@ -513,7 +503,7 @@ function tick() {
             stage.addChild(playerText);
             create_counter++;
             // Create word every 2 seconds
-            if (create_counter == ONE_SECOND) {
+            if (create_counter == ONE_SECOND*5) {
                 create_counter = 0;
                 createWord();
             }
@@ -525,14 +515,11 @@ function tick() {
             if (current_word == -1) {
                 current_word = getCurrentWord();
             } else if (current_word == getCurrentWord()) {
-                check_counter++;
-                if (check_counter > 7) {
                     score += 10;
                     scoreText.text = "Score : " + score;
                     wordContainer.removeChild(wordList[current_word]);
                     wordList.splice(current_word, 1);
                     playerText.text = "";
-                }
             } else {
                 check_counter = 0;
             }
