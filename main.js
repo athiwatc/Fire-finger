@@ -407,7 +407,7 @@ function loadBackground(e) {
 
 // Create words
 function createWord() {
-	thisword = dic[Math.floor(Math.random() * dic.length)];
+	thisword = capitaliseFirstLetter(dic[Math.floor(Math.random() * dic.length)]);
     var word = new createjs.Text(thisword, "14px Segoe UI Italic", "#fff");
     wordList.push(word);
     randomPosition(word);
@@ -466,6 +466,11 @@ function highlightWord() {
     return match;
 }
 
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function getCurrentWord() {
     // Loop through all word in screen
     for (var i = 0; i < wordList.length; i++) {
@@ -480,7 +485,7 @@ function getCurrentWord() {
 function randomPosition(word) {
     word.x = Math.random() * (canvas.width - 50);
     word.y = -10;
-    word.speed = Math.random() * 10;
+    word.speed = Math.random() * 2;
 }
 
 function isClick(text) {
