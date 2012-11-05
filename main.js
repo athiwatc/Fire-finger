@@ -120,7 +120,7 @@ var dic = ["a", "convenient", "hard", "official", "something",
 "believe", "ever", "line", "reason", "tree",
 "belong", "every", "list", "receipt", "trip",
 "beside", "everything", "little", "receive", "trouble",
-"best", "evidence", "live", "recent", "TRUE",
+"best", "evidence", "live", "recent", "true",
 "better", "examination", "local", "recommend", "truly",
 "between", "except", "long", "recover", "trust",
 "big", "expect", "look", "red", "try",
@@ -209,13 +209,15 @@ var dic = ["a", "convenient", "hard", "official", "something",
 "complaint", "grant", "objection", "size", "you",
 "complete", "great", "oblige", "slide", "young",
 "concern", "ground", "obtain", "slower", "your",
-"condition", "guess", "occupy", "small", " ",
-"conference", "guest", "October", "so", " ",
-"connection", "had", "of", "soap", " ",
-"consider", "half", "off", "soft", " ",
-"consideration", "hand", "offer", "sold", " ",
-"contain", "happen", "office", "some", " ",
+"condition", "guess", "occupy", "small",
+"conference", "guest", "October", "so",
+"connection", "had", "of", "soap",
+"consider", "half", "off", "soft",
+"consideration", "hand", "offer", "sold",
+"contain", "happen", "office", "some",
 "contract", "happy"];
+
+String.prototype.trim=function(){return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');}
 
 /* Word list */
 var wordList;
@@ -240,6 +242,9 @@ var click;
 /* Player status */
 var score;
 var hp;
+
+// Combo
+var combo = 0;
 
 /* Frame Counter */
 var create_counter; // Frame counter for generate word
@@ -397,7 +402,7 @@ function loadBackground(e) {
 
 // Create words
 function createWord() {
-	thisword = capitaliseFirstLetter(dic[Math.floor(Math.random() * dic.length)]);
+	thisword = capitaliseFirstLetter(dic[Math.floor(Math.random() * dic.length)]).trim();
     var word = new createjs.Text(thisword, "14px Segoe UI Italic", "#fff");
     wordList.push(word);
     randomPosition(word);
@@ -475,7 +480,7 @@ function getCurrentWord() {
 function randomPosition(word) {
     word.x = Math.random() * (canvas.width - 50);
     word.y = -10;
-    word.speed = Math.random() * 2;
+    word.speed = Math.random() * (1+score/1000);
 }
 
 function isClick(text) {
@@ -488,8 +493,12 @@ function isClick(text) {
 function tick() {
     if (!isStart) {
         addMenu();
-        if (isClick("single"))
+        if (isClick("single")) {
+        	stage.addChild(scoreText);
+            stage.addChild(hpText)
+            stage.addChild(playerText);
         	isStart = true
+        }
     } else {
         removeMenu(); // Remove menu
         // If game over, display Game Over TextField
@@ -498,31 +507,30 @@ function tick() {
             gameOver();
         } // If game is not over, create and move word
         else if (!isOver) {
-            stage.addChild(scoreText);
-            stage.addChild(hpText)
-            stage.addChild(playerText);
             create_counter++;
-            // Create word every 2 seconds
-            if (create_counter == ONE_SECOND*5) {
+            // Create word every 5 seconds
+            if (create_counter >=  ONE_SECOND * 3 * Math.pow(2, score/1000)) {
                 create_counter = 0;
                 createWord();
             }
             moveWord(); // Move word
             var matched = highlightWord();
-            if (!matched)
+            if (!matched && playerText.text.length != 0) {
+            	combo = 0;
             	playerText.text = "";
-
-            if (current_word == -1) {
-                current_word = getCurrentWord();
-            } else if (current_word == getCurrentWord()) {
-                    score += 10;
-                    scoreText.text = "Score : " + score;
-                    wordContainer.removeChild(wordList[current_word]);
-                    wordList.splice(current_word, 1);
-                    playerText.text = "";
-            } else {
-                check_counter = 0;
             }
+
+            current_word = getCurrentWord();
+            if (current_word != -1 && current_word == getCurrentWord()) {
+                score += 10 * wordList[current_word].text.length * wordList[current_word].y/1000;
+                scoreText.text = "Score : " + Math.round(score);
+                hp += Math.round(Math.log(combo+1));
+                hpText.text = "HP : " + Math.round(hp);
+                wordContainer.removeChild(wordList[current_word]);
+                wordList.splice(current_word, 1);
+                playerText.text = "";
+                combo += 2 * (combo + 1);
+        	}
         }
     }
 
