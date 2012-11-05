@@ -433,7 +433,7 @@ function getCurrentWord() {
 function randomPosition(word) {
     word.x = Math.random() * (canvas.width - 50);
     word.y = -10;
-    word.speed = Math.random() * (1+score/1000);
+    word.speed = Math.random() * (1+score/100);
 }
 
 function isClick(text) {
@@ -462,7 +462,7 @@ function tick() {
         else if (!isOver) {
             create_counter++;
             // Create word every 5 seconds
-            if (create_counter >=  ONE_SECOND * 3 * Math.pow(2, score/1000)) {
+            if (create_counter >=  (ONE_SECOND * 3) / Math.pow(2, score/1000)) {
                 create_counter = 0;
                 createWord();
             }
