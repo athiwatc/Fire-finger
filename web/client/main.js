@@ -369,6 +369,11 @@ function gameOver() {
     stage.addChild(overText);
 }
 
+// Remove Game Over
+function gameOverRemove() {
+    stage.removeChild(overText);
+}
+
 // Move words
 function moveWord() {
     // Index of word that out of canvas
@@ -444,6 +449,12 @@ function isClick(text) {
 
 // Update canvas
 function tick() {
+    //The game is over.
+    /*if (isOver && click) {
+        gameOverRemove();
+        isOver = false;
+        isStart = false;
+    }*/
     if (!isStart) {
         addMenu();
         if (isClick("single")) {
@@ -483,7 +494,7 @@ function tick() {
                 score += 10 * wordList[current_word].text.length * wordList[current_word].y/1000;
                 scoreText.text = "Score : " + Math.round(score);
                 hp += Math.round(Math.log(combo+1));
-                hpText.text = "HP : " + Math.round(hp);
+                hpText.text = "HP : " + Math.max(0,Math.round(hp));
                 wordContainer.removeChild(wordList[current_word]);
                 wordList.splice(current_word, 1);
                 playerText.text = "";
