@@ -470,7 +470,12 @@ function tick() {
             var matched = highlightWord();
             if (!matched && playerText.text.length != 0) {
             	combo = 0;
-            	playerText.text = "";
+                //Type in the next alphabet that you miss automatically
+            	playerText.text = capitaliseFirstLetter(playerText.text.substr(-1));
+                //Check again if the next alphanet is valid
+                matched = highlightWord();
+                if (!matched)
+                    playerText.text = "";
             }
 
             current_word = getCurrentWord();
