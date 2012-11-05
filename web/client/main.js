@@ -253,53 +253,6 @@ var check_counter; // Frame counter for check word correctness
 /* Constant */
 var ONE_SECOND = 30;
 
-// Initial function
-function init() {
-
-    canvas = document.getElementById("canvas"); // Reference to canvas
-    stage = new createjs.Stage(canvas); // Create stage
-
-    // Mouse event
-    canvas.onmouseup = onMouseUp;
-    canvas.onmousedown = onMouseDown;
-
-    // Keyboard event
-    document.onkeypress = onTyping;
-
-    stage.mouseEventsEnabled = true; // Enabled mouse event
-
-    // Load background image
-    bgSrc = new Image();
-    bgSrc.src = "img/bg.png";
-    bgSrc.onload = loadBackground;
-
-    /* Initial Variable */
-    hp = 100;
-    score = 0;
-    create_counter = 0;
-    check_counter = 0;
-    current_word = -1;
-
-    /* Initial State */
-    isStart = false;
-    isOver = false;
-    click = false;
-
-    // Create TextField
-    createText();
-
-    // Create word container
-    wordContainer = new createjs.Container();
-
-    // Init word list
-    wordList = new Array();
-
-    // Init frame rate and timer
-    createjs.Ticker.setFPS(60);
-    createjs.Ticker.addListener(window);
-
-}
-
 // Mouse up event
 function onMouseUp(e) {
     click = false;
@@ -536,4 +489,51 @@ function tick() {
 
     // update stage
     stage.update();
+}
+
+// Initial function
+function init() {
+
+    canvas = document.getElementById("canvas"); // Reference to canvas
+    stage = new createjs.Stage(canvas); // Create stage
+
+    // Mouse event
+    canvas.onmouseup = onMouseUp;
+    canvas.onmousedown = onMouseDown;
+
+    // Keyboard event
+    document.onkeypress = onTyping;
+
+    stage.mouseEventsEnabled = true; // Enabled mouse event
+
+    // Load background image
+    bgSrc = new Image();
+    bgSrc.src = "img/bg.png";
+    bgSrc.onload = loadBackground;
+
+    /* Initial Variable */
+    hp = 100;
+    score = 0;
+    create_counter = 0;
+    check_counter = 0;
+    current_word = -1;
+
+    /* Initial State */
+    isStart = false;
+    isOver = false;
+    click = false;
+
+    // Create TextField
+    createText();
+
+    // Create word container
+    wordContainer = new createjs.Container();
+
+    // Init word list
+    wordList = new Array();
+
+    // Init frame rate and timer
+    createjs.Ticker.setFPS(60);
+    createjs.Ticker.addListener(window);
+
 }
