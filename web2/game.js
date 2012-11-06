@@ -4,7 +4,7 @@ window.onload = function () {
 
     Crafty.init(width, height);
 
-    Crafty.c("Fix", {
+    Crafty.c("TextFormat", {
 	    init: function () {
 	  		this._textFont = {
 			    "type": "",
@@ -19,31 +19,59 @@ window.onload = function () {
 
 	Crafty.scene("Start",function(){
 
-		Crafty.e("Game,2D,DOM,Text,Fix")
-			.text("FireFinger")
+		Crafty.e("Game,2D,DOM,Text,TextFormat")
+			.text("Fire Finger")
 			.textColor("#ffffff")
 			.textFont({
-				size: "30px",
-				family: "Segoe UI"
+				size: "32px",
+				family: "Segoe UI",
+				type: "Italic",
+				weight: "Bold"
 			})
 			.attr({
-				x: width/2,
+				x: width/2 - 60,
 				y: height/3,
 				w: 200
 			});
 
-		Crafty.e("Single,2D,DOM,Text,Fix")
+		Crafty.e("Single,2D,DOM,Text,TextFormat")
 			.text("SinglePlayer")
 			.textColor("#ffffff")
 			.textFont({
 				size : "20px",
-				family:"Segoe UI"
+				family:"Segoe UI",
+				type: "Italic"
 			})
 			.attr({
-				x: width/2,
+				x: width/2 - 40,
 				y: height/3 + 100
+			});
+
+		Crafty.e("Single,2D,DOM,Text,TextFormat")
+			.text("MultiPlayer")
+			.textColor("#ffffff")
+			.textFont({
+				size : "20px",
+				family:"Segoe UI",
+				type: "Italic"
 			})
-			.css('text-align', 'center');
+			.attr({
+				x: width/2 - 40,
+				y: height/3 + 140
+			});
+
+		Crafty.e("Single,2D,DOM,Text,TextFormat")
+			.text("Credit")
+			.textColor("#ffffff")
+			.textFont({
+				size : "20px",
+				family:"Segoe UI",
+				type: "Italic"
+			})
+			.attr({
+				x: width/2 - 20,
+				y: height/3 + 180
+			});
 
 	});
 
