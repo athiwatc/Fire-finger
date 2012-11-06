@@ -7,23 +7,24 @@ window.onload = function () {
 
 	Crafty.scene("Start",function(){
 
-		Crafty.e("Game,2D,Canvas,Text")
+		Crafty.e("Game,2D,DOM,Text")
 			.text("FireFinger")
-			.textColor("#ffffff")
-			.textFont({
-				size: "30px",
-				weight: 'bold',
-				family: "Segoe UI"
+			.css({
+				textAlign:"center",
+				font:"Arial",
+				size:"50px"
 			})
 			.attr({
 				x: width/2,
 				y: height/3
 			});
 
-		Crafty.e("Single,2D,Canvas,Text")
+		Crafty.e("Single,2D,DOM,Text")
 			.text("SinglePlayer")
-			.textColor("#ffffff")
-			.textFont({size : "20px",family:"Segoe UI"})
+			.css({
+				textAlign:"center",
+				font:"Serif"
+			})
 			.attr({
 				x: width/2,
 				y: height/3 + 100
