@@ -23,7 +23,10 @@ window.onload = function () {
 		Crafty.e("Single,2D,Canvas,Text")
 			.text("SinglePlayer")
 			.textColor("#ffffff")
-			.textFont({size : "20px",family:"Segoe UI"})
+			.textFont({
+				size : "20px",
+				family:"Segoe UI"
+			})
 			.attr({
 				x: width/2,
 				y: height/3 + 100
