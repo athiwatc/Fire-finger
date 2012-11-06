@@ -91,5 +91,5 @@ window.onload = function () {
 
 	});
 
-	Crafty.scene("Start");
+	Crafty.scene("Loading");
 };
