@@ -1,5 +1,5 @@
 window.onload = function () {
-	var width = 480;
+	var width = 760;
 	var height = 640;
 
     Crafty.init(width, height);
@@ -11,13 +11,14 @@ window.onload = function () {
 			.text("FireFinger")
 			.textColor("#ffffff")
 			.textFont({
-				size: "30px",
+				size: "3011px",
 				weight: 'bold',
 				family: "Segoe UI"
 			})
 			.attr({
 				x: width/2,
-				y: height/3
+				y: height/3,
+				w: 200
 			});
 
 		Crafty.e("Single,2D,DOM,Text")
