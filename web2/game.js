@@ -71,6 +71,7 @@ window.onload = function () {
         })
             .css('text-align', 'center');
 
+        //Credit text
         Crafty.e("Single,2D,DOM,Text,TextFormat")
             .text("Credit")
             .textColor("#ffffff")
@@ -86,6 +87,7 @@ window.onload = function () {
         })
             .css('text-align', 'center');
 
+        //Developed by who text
         Crafty.e("Developed,2D,DOM,Text,TextFormat")
             .text("Developed by Spart Studio")
             .textColor("#ffffff")
@@ -102,12 +104,17 @@ window.onload = function () {
             .css('text-align', 'center');
     });
 
+    //The single player seen
     Crafty.scene("Single", function () {
-
+        
+        //Get the current FPS
         var FPS = +Crafty.timer.getFPS();
+        //Set the base line that the word will start to disappear
         var baseLine = 500;
+        //The current text of the play, current text that was typed.
         var player_text = "";
 
+        //The background
         Crafty.e("2D,DOM,Text,Image")
             .image('img/single.png')
             .attr({
@@ -117,8 +124,9 @@ window.onload = function () {
             h: height
         });
         
+        //The current player text
         Crafty.e("Player,2D,DOM,Text,TextFormat")
-            .text(function() { return player_text;})
+            .text(player_text)
             .textColor("#ffffff")
             .textFont({
                 size: "16px",
@@ -126,13 +134,34 @@ window.onload = function () {
             })
             .attr({
                 x: 0,
-                y: 600,
-                h: width
+                y: 570,
+                w: width
             })
-            .css('text-align', 'center');
+            .css('text-align', 'center')
+            .bind("KeyDown",function(e){
+                
+                    function isAlphabet(c){
+                        return /^[a-zA-Z()]$/.test(c);
+                    }
+                
+                    if( isAlphabet(String.fromCharCode(e.key)) ){
+                        if( player_text.length == 0 )
+                            player_text += String.fromCharCode(e.key).toUpperCase();
+                        else
+                            player_text += String.fromCharCode(e.key).toLowerCase();
+                    }
+                    Crafty("Player").each(function(){
+                            this.text(player_text);
+                        })
+                });
 
-        Crafty.e("Keyboard")
+        Crafty.e()
             .bind("EnterFrame", function () {
+                
+                function startWith(str,pattern){
+                        return pattern == str.substr(0, pattern.length);
+                    }
+                
                 if (Crafty.frame() % (2 * FPS) == 0) {
                     Crafty.e("Words,2D,DOM,Text,TextFormat")
                         .text(function() {
@@ -144,8 +173,8 @@ window.onload = function () {
                             family: "Segoe UI"
                         })
                         .attr({
-                            x: Crafty.math.randomInt(225, 535),
-                            y: 74
+                            x: Crafty.math.randomInt(229, 520),
+                            y: 29
                         })
                         .bind("EnterFrame", function () {
                             this.y += 1;
@@ -154,9 +183,15 @@ window.onload = function () {
                             }
                         });
                     }
+                    
+                Crafty("Words").each(function(){
+                    if( player_text.length > 0 && (this.text(),player_text) ){
+                        this.textColor("#ff0000");
+                    }
                 })
-            .bind("KeyDown",function(){
+                    
                 
+                    
                 })
     });
 
