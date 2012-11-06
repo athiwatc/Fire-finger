@@ -1,5 +1,8 @@
 window.onload = function () {
-    Crafty.init(600, 300);
+	var width = 600;
+	var height = 300;
+
+    Crafty.init(width, height);
 	Crafty.background('rgb(127,127,127)');
 
 	Crafty.scene("Start",function(){
