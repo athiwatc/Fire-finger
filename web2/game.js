@@ -1,5 +1,5 @@
 window.onload = function () {
-	var width = 360;
+	var width = 480;
 	var height = 640;
 
     Crafty.init(width, height);
