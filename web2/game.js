@@ -88,7 +88,9 @@ window.onload = function () {
 	});
 
 	Crafty.scene("Loading", function() {
-
+		Crafty.Load(['bg.png'], function() {
+			Crafty.scene('Start');
+		});
 	});
 
 	Crafty.scene("Loading");
