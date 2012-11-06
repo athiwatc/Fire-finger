@@ -3,16 +3,27 @@ window.onload = function () {
 	var height = 640;
 
     Crafty.init(width, height);
+
+    Crafty.c("Fix", {
+	    init: function () {
+	  		this._textFont = {
+			    "type": "",
+			    "weight": "",
+			    "size": "",
+			    "family": ""
+	  		}
+		}
+	});
+
 	Crafty.background('rgb(127,127,127)');
 
 	Crafty.scene("Start",function(){
 
-		Crafty.e("Game,2D,DOM,Text")
+		Crafty.e("Game,2D,DOM,Text,Fix")
 			.text("FireFinger")
 			.textColor("#ffffff")
 			.textFont({
-				size: "3011px",
-				weight: 'bold',
+				size: "30px",
 				family: "Segoe UI"
 			})
 			.attr({
@@ -21,7 +32,7 @@ window.onload = function () {
 				w: 200
 			});
 
-		Crafty.e("Single,2D,DOM,Text")
+		Crafty.e("Single,2D,DOM,Text,Fix")
 			.text("SinglePlayer")
 			.textColor("#ffffff")
 			.textFont({
