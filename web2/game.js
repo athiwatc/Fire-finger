@@ -19,6 +19,15 @@ window.onload = function () {
 
 	Crafty.scene("Start",function(){
 
+		Crafty.e("2D,DOM,Text,Image")
+		.image('bg.png')
+		.attr({
+			x: 0,
+			y: 0,
+			w: width,
+			h: height
+		});
+
 		Crafty.e("Game,2D,DOM,Text,TextFormat")
 			.text("Fire Finger")
 			.textColor("#ffffff")
@@ -88,7 +97,7 @@ window.onload = function () {
 	});
 
 	Crafty.scene("Loading", function() {
-		Crafty.Load(['bg.png'], function() {
+		Crafty.load(['bg.png'], function() {
 			Crafty.scene('Start');
 		});
 
