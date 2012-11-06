@@ -87,5 +87,9 @@ window.onload = function () {
 
 	});
 
+	Crafty.scene("Loading", function() {
+
+	});
+
 	Crafty.scene("Start");
 };
