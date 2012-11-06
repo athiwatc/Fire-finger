@@ -1,4 +1,3 @@
-
 window.onload = function () {
     var width = 760;
     var height = 640;
@@ -110,7 +109,15 @@ window.onload = function () {
         //Get the current FPS
         var FPS = +Crafty.timer.getFPS();
         //Set the base line that the word will start to disappear
-        var baseLine = 500;
+        var baseLine = 545;
+        Crafty.e("2D,DOM,Text,Image")
+            .image('img/baseline_white.png')
+            .attr({
+            x: 230,
+            y: 530,
+            w: width,
+            h: height
+        });
         //The current text of the play, current text that was typed.
         var player_text = "";
 
@@ -139,9 +146,13 @@ window.onload = function () {
             })
             .css('text-align', 'center')
             .bind("KeyDown",function(e){
-                
+                    
                     function isAlphabet(c){
                         return /^[a-zA-Z()]$/.test(c);
+                    }
+                    
+                    function startWith(str,pattern){
+                        return pattern == str.substr(0, pattern.length);
                     }
                 
                     if( isAlphabet(String.fromCharCode(e.key)) ){
@@ -150,6 +161,25 @@ window.onload = function () {
                         else
                             player_text += String.fromCharCode(e.key).toLowerCase();
                     }
+                    
+                    Crafty("Words").each(function(){
+                            if( player_text == this.text() ){
+                                this.textColor("green");
+                                player_text = "";
+                            }
+                        })
+                        
+                    var match = false;
+                    Crafty("Words").each(function(){
+                            if( startWith(this.text(),player_text) ){
+                                match = true;
+                            }else if( startWith(this.text(),String.fromCharCode(e.key).toUpperCase()) ){
+                                match = true;
+                                player_text = String.fromCharCode(e.key).toUpperCase();
+                            }
+                        })
+                    if( !match ) player_text = "";
+                    
                     Crafty("Player").each(function(){
                             this.text(player_text);
                         })
@@ -185,12 +215,12 @@ window.onload = function () {
                     }
                     
                 Crafty("Words").each(function(){
-                    if( player_text.length > 0 && (this.text(),player_text) ){
+                    if( player_text.length > 0 && startWith(this.text(),player_text) ){
                         this.textColor("#ff0000");
+                    }else{
+                        this.textColor("#ffffff");
                     }
                 })
-                    
-                
                     
                 })
     });
