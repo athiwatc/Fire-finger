@@ -30,7 +30,9 @@ window.onload = function () {
 			.attr({
 				x: width/2,
 				y: height/3 + 100
-			});
+				w: 100
+			})
+			.css('text-align', 'center');
 
 	});
 
