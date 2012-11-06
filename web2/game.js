@@ -91,6 +91,13 @@ window.onload = function () {
 		Crafty.Load(['bg.png'], function() {
 			Crafty.scene('Start');
 		});
+
+		Crafty.e('2D,DOM,Text,TextFormat')
+		.text('Loading...')
+		.attr({
+			x: width/2,
+			y: height/2
+		});
 	});
 
 	Crafty.scene("Loading");
