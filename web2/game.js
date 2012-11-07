@@ -1,3 +1,4 @@
+
 window.onload = function () {
     var width = 760;
     var height = 640;
@@ -91,35 +92,31 @@ window.onload = function () {
             .text("Developed by Spart Studio")
             .textColor("#ffffff")
             .textFont({
-                size: "14px",
-                family: "Segoe UI",
-                type: "Italic"
-            })
+            size: "14px",
+            family: "Segoe UI",
+            type: "Italic"
+        })
             .attr({
-                x: 0,
-                y: 620,
-                w: width
-            })
+            x: 0,
+            y: 620,
+            w: width
+        })
             .css('text-align', 'center');
     });
 
     //The single player seen
     Crafty.scene("Single", function () {
-        
+
         //Get the current FPS
         var FPS = +Crafty.timer.getFPS();
         //Set the base line that the word will start to disappear
-        var baseLine = 545;
-        Crafty.e("2D,DOM,Text,Image")
-            .image('img/baseline_white.png')
-            .attr({
-            x: 230,
-            y: 530,
-            w: width,
-            h: height
-        });
+        var baseLine = 535;
         //The current text of the play, current text that was typed.
         var player_text = "";
+
+        var score = 0;
+
+        var hp = 100;
 
         //The background
         Crafty.e("2D,DOM,Text,Image")
@@ -130,99 +127,177 @@ window.onload = function () {
             w: width,
             h: height
         });
-        
+
+        //Baseline
+        Crafty.e("2D,DOM,Text,Image")
+            .image('img/baseline_white.png')
+            .attr({
+            x: 225,
+            y: 520, //Middle at 521, for now put at 519 to 523
+            w: width,
+            h: height
+        });
+
+        Crafty.e("Score,2D,DOM,Text,TextFormat")
+            .text("Score : " + this.score)
+            .textColor("#ffffff")
+            .textFont({
+            size: "16px",
+            family: "Segoe UI"
+        })
+            .attr({
+            x: 250,
+            y: 615
+        })
+
+        Crafty.e("Hp,2D,DOM,Text,TextFormat")
+            .text("HP : " + hp)
+            .textColor("#ffffff")
+            .textFont({
+            size: "16px",
+            family: "Segoe UI"
+        })
+            .attr({
+            x: 480,
+            y: 615
+        })
+
         //The current player text
         Crafty.e("Player,2D,DOM,Text,TextFormat")
             .text(player_text)
             .textColor("#ffffff")
             .textFont({
-                size: "16px",
-                family: "Segoe UI"
-            })
+            size: "16px",
+            family: "Segoe UI"
+        })
             .attr({
-                x: 0,
-                y: 570,
-                w: width
-            })
+            x: 0,
+            y: 570,
+            w: width
+        })
             .css('text-align', 'center')
-            .bind("KeyDown",function(e){
-                    
-                    function isAlphabet(c){
-                        return /^[a-zA-Z()]$/.test(c);
+            .bind("KeyDown", function (e) {
+
+            function isAlphabet(c) {
+                return /^[a-zA-Z()]$/.test(c);
+            }
+
+            function startWith(str, pattern) {
+                return pattern == str.substr(0, pattern.length);
+            }
+
+            if (isAlphabet(String.fromCharCode(e.key))) {
+                if (player_text.length == 0) player_text += String.fromCharCode(e.key).toUpperCase();
+                else player_text += String.fromCharCode(e.key).toLowerCase();
+            }
+
+            Crafty("Words").each(function () {
+                if (this._textColor != "rgb(0,255,0)") {
+                    if (player_text.length > 0 && startWith(this.text(), player_text)) {
+                        this.textColor("#ff0000");
+                    } else {
+                        this.textColor("#ffffff");
                     }
-                    
-                    function startWith(str,pattern){
-                        return pattern == str.substr(0, pattern.length);
-                    }
-                
-                    if( isAlphabet(String.fromCharCode(e.key)) ){
-                        if( player_text.length == 0 )
-                            player_text += String.fromCharCode(e.key).toUpperCase();
-                        else
-                            player_text += String.fromCharCode(e.key).toLowerCase();
-                    }
-                    
-                    Crafty("Words").each(function(){
-                            if( player_text == this.text() ){
-                                this.textColor("green");
-                                player_text = "";
-                            }
-                        })
-                        
-                    var match = false;
-                    Crafty("Words").each(function(){
-                            if( startWith(this.text(),player_text) ){
-                                match = true;
-                            }else if( startWith(this.text(),String.fromCharCode(e.key).toUpperCase()) ){
-                                match = true;
-                                player_text = String.fromCharCode(e.key).toUpperCase();
-                            }
-                        })
-                    if( !match ) player_text = "";
-                    
-                    Crafty("Player").each(function(){
-                            this.text(player_text);
-                        })
+                }
+            });
+
+            Crafty("Words").each(function () {
+                if (player_text == this.text()) {
+                    this.textColor("#00ff00");
+                    player_text = "";
+                }
+            });
+
+            var match = false;
+            Crafty("Words").each(function () {
+                if (startWith(this.text(), player_text)) {
+                    match = true;
+                } else if (startWith(this.text(), player_text[player_text.length - 1])) {
+                    match = true;
+                    player_text = player_text[player_text.length - 1];
+                }
+            });
+
+            if (!match) player_text = "";
+
+            if (e.key == Crafty.keys["SPACE"]) {
+                player_text = "";
+                Crafty("Words").each(function () {
+                    if (this._textColor != "rgb(0,255,0)") this.textColor("#ffffff");
                 });
+            }
+
+            Crafty("Player").each(function () {
+                this.text(player_text);
+            })
+        });
 
         Crafty.e()
             .bind("EnterFrame", function () {
-                
-                function startWith(str,pattern){
-                        return pattern == str.substr(0, pattern.length);
+
+            function startWith(str, pattern) {
+                return pattern == str.substr(0, pattern.length);
+            }
+
+            if (Crafty.frame() % (2 * FPS) == 0) {
+                var current_word = dic[Math.floor(Math.random() * dic.length)].replace(/\w\S*/g, function (txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                })
+                var random_x = Crafty.math.randomInt(234, 520);
+                if (current_word.width() + random_x >= 520) {
+                    random_x = 520 - current_word.width();
+                }
+                Crafty.e("Words,2D,DOM,Text,TextFormat")
+                    .text(function () {
+                    return current_word;
+                })
+                    .textColor("#ffffff")
+                    .textFont({
+                    size: "16px",
+                    family: "Segoe UI"
+                })
+                    .attr({
+                    x: random_x,
+                    y: 29
+                })
+                    .bind("EnterFrame", function () {
+                    this.y += 1;
+                    if (this.y == baseLine) {
+                        if (this._textColor != "rgb(0,255,0)") {
+                            hp -= this.text().length;
+                        } else {
+                            score += this.text().length;
+                        }
+                        this.destroy();
                     }
-                
-                if (Crafty.frame() % (2 * FPS) == 0) {
-                    Crafty.e("Words,2D,DOM,Text,TextFormat")
-                        .text(function() {
-                            return dic[Math.floor(Math.random() * dic.length)].replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-                        })
-                        .textColor("#ffffff")
-                        .textFont({
-                            size: "16px",
-                            family: "Segoe UI"
-                        })
-                        .attr({
-                            x: Crafty.math.randomInt(229, 520),
-                            y: 29
-                        })
-                        .bind("EnterFrame", function () {
-                            this.y += 1;
-                            if (this.y == baseLine) {
+                })
+                    .bind("KeyDown", function (e) {
+                    if (e.key == Crafty.keys["SPACE"]) {
+                        if (this._textColor == "rgb(0,255,0)") {
+                            if (this.y > 519 && this.y < 523) {
+                                score += 4 * this.text().length;
+                                this.destroy();
+                            } else if (this.y > 518 && this.y < 524) {
+                                score += 3 * this.text().length;
+                                this.destroy();
+                            } else if (this.y >= 517 && this.y <= 525) {
+                                score += 2 * this.text().length;
                                 this.destroy();
                             }
-                        });
+                        }
                     }
-                    
-                Crafty("Words").each(function(){
-                    if( player_text.length > 0 && startWith(this.text(),player_text) ){
-                        this.textColor("#ff0000");
-                    }else{
-                        this.textColor("#ffffff");
-                    }
-                })
-                    
-                })
+                });
+            }
+
+            Crafty("Score").each(function () {
+                this.text(score);
+            });
+
+            Crafty("Hp").each(function () {
+                this.text(hp);
+            });
+
+        })
     });
 
     Crafty.scene("Multi", function () {
@@ -248,3 +323,21 @@ window.onload = function () {
 
     Crafty.scene("Loading");
 };
+
+String.prototype.width = function (font) {
+    var f = font || '12px arial',
+        o = $('<div>' + this + '</div>')
+            .css({
+            'position': 'absolute',
+            'float': 'left',
+            'white-space': 'nowrap',
+            'visibility': 'hidden',
+            'font': f
+        })
+            .appendTo($('body')),
+        w = o.width();
+
+    o.remove();
+
+    return w;
+}
